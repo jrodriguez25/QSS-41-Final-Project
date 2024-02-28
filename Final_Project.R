@@ -61,7 +61,7 @@ final_df <- final_edges_with_nodes %>%
 # getting largest component -----------------------------------------------
 decomp = components(network_graph_simplified)
 largest_comp = which.max(decomp$csize)
-large_ids = V(network_simplified)[decomp$membership == largest_comp]
+large_ids = V(network_graph_simplified)[decomp$membership == largest_comp]
 giant_comp = induced_subgraph(network_graph_simplified, large_ids)
 
 
