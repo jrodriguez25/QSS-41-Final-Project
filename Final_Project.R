@@ -23,6 +23,17 @@ genres=nodes %>%
 nodes_filtered <- nodes %>% 
   filter(popularity>70) %>% 
   filter(!str_detect(genres, "classic") & !str_detect(genres, "jazz"))
+# Create the Graph --------------------------------------------------------
+
+# Get the unique Spotify IDs from nodes
+node_ids <- unique(nodes_filtered$spotify_id)
+
+# Identify edges to remove (any edge where either id_0 or id_1 is not in node_ids)
+edges_to_remove <- !(edges$id_0 %in% node_ids) | !(edges$id_1 %in% node_ids)
+cleaned_edges <- edges[!edges_to_remove, ]
+network_graph <- graph_from_data_frame(d = cleaned_edges, vertices = nodes_filtered, directed = FALSE)
+network_graph_simplified <- simplify(network_graph)
+
 
 # Reorganizing the Dataset an Alternate Way -------------------------------
 
@@ -46,16 +57,6 @@ final_df <- final_edges_with_nodes %>%
   select(name_0, name_1, followers_0, followers_1, popularity_0, popularity_1, genres_0, genres_1) # Reorder columns
 
 
-# Create the Graph --------------------------------------------------------
-
-# Get the unique Spotify IDs from nodes
-node_ids <- unique(nodes_filtered$spotify_id)
-
-# Identify edges to remove (any edge where either id_0 or id_1 is not in node_ids)
-edges_to_remove <- !(edges$id_0 %in% node_ids) | !(edges$id_1 %in% node_ids)
-cleaned_edges <- edges[!edges_to_remove, ]
-network_graph <- graph_from_data_frame(d = cleaned_edges, vertices = nodes_filtered, directed = FALSE)
-network_graph_simplified <- simplify(network_graph)
 
 # getting largest component -----------------------------------------------
 decomp = components(network_graph_simplified)
