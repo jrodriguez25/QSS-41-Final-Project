@@ -21,7 +21,11 @@ genres=nodes %>%
 
 # FILTER OUT GENRES -------------------------------------------------------
 nodes_filtered <- nodes %>% 
+<<<<<<< HEAD:Final_Project.R
   filter(popularity>70) %>%  # i think we need to remove this populatiry filter
+=======
+  # filter(popularity>70) %>%  # i think we need to remove this populatiry filter
+>>>>>>> ad3c3a0296ad75ef38ef1f97e86eab04f927d93e:LHMAR1_Final_Project 2.R
   filter(!str_detect(genres, "classic") & !str_detect(genres, "jazz"))
 
 # CREATE GRAPH --------------------------------------------------------
@@ -51,7 +55,21 @@ V(giant_comp) # this is only 136287 vertices
 network.core <- coreness(network_graph_simplified,  mode = "all")
 network_core_df <- data.frame(node = names(network.core), coreness = network.core)
 
+<<<<<<< HEAD:Final_Project.R
 
+=======
+#Serrano Method Pruning NOT COMPLETE--------------------------------------------------
+
+#Serrano method
+network_weights.g = graph.edgelist(as.matrix(network_simplified.weight[,1:2]))
+E(network_weights.g)$weight <- as.numeric(network_simplified.weight[,3])
+
+E(network_weights.g)$weight
+
+network_weights.b = backbone(network_weights.g, weights = E(network_weights.g)$weight, alpha= .5)
+
+str(network_weights.b)
+>>>>>>> ad3c3a0296ad75ef38ef1f97e86eab04f927d93e:LHMAR1_Final_Project 2.R
 
 
 
@@ -99,10 +117,15 @@ collabs.prune = collabs.prune[!is.na(collabs.prune$z1), 1:3]
 collabsgraph.prune <- graph.data.frame(collabs.prune)
 plot(collabsgraph.prune)
 V(collabsgraph.prune) # 457 vertices w/ 2, 1.3, 183 vertices w/ 2, 2. 401 vertices with 1.5, 1.5. 1 and 1 give 522 vert
+<<<<<<< HEAD:Final_Project.R
 
 # STRUCTURAL SIMILAIRITY--NOT COMPLETE ---------------------------------------------------
 
 #adjacency matrix
+=======
+
+# STRUCTURAL SIMILAIRITY--NOT COMPLETE ---------------------------------------------------
+>>>>>>> ad3c3a0296ad75ef38ef1f97e86eab04f927d93e:LHMAR1_Final_Project 2.R
 
 collabs.prune_adjacency <- as_adjacency_matrix(collabsgraph.prune, sparse = FALSE)
 
@@ -111,14 +134,21 @@ collabs.prune_adjacency <- as_adjacency_matrix(collabsgraph.prune, sparse = FALS
 # collabs.prune_adjacency$followers <- nodes_filtered$followers
 # collabs.prune_adjacency$popularity <- nodes_filtered$popularity
 
+<<<<<<< HEAD:Final_Project.R
 
 # #change all numbers to be between 0 and 1
 # collabs.prune_adjacency$followers <- (collabs.prune_adjacency$followers - min(collabs.prune_adjacency$followers)) / (max(collabs.prune_adjacency$followers) - min(collabs.prune_adjacency$followers))
 # collabs.prune_adjacency$popularity <- (collabs.prune_adjacency$popularity - min(collabs.prune_adjacency$popularity)) / (max(collabs.prune_adjacency$popularity) - min(collabs.prune_adjacency$popularity))
+=======
+#looking at communities
+fg <- cluster_fast_greedy(giant_comp)
+plot(fg, giant_comp)
+>>>>>>> ad3c3a0296ad75ef38ef1f97e86eab04f927d93e:LHMAR1_Final_Project 2.R
 
 collabs.dist <- dist(collabs.prune_adjacency, method = "euclidean", diag = TRUE, upper = TRUE)
 distance_matrix_df <- as.data.frame(as.matrix(collabs.dist))
 
+<<<<<<< HEAD:Final_Project.R
 #Hierarchical Clustering from class
 
 collabs.dend = hclust(collabs.dist, method = "single")
@@ -128,6 +158,8 @@ plot(collabs.dend)
 
 
 
+=======
+>>>>>>> ad3c3a0296ad75ef38ef1f97e86eab04f927d93e:LHMAR1_Final_Project 2.R
 # BRIDGES AND WEAK TIES -----------------------------------------------------------
 
 decomp = components(collabsgraph.prune)
